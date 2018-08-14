@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>URL Shortener App</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'urlshortenerapp/css/style.css'%}"/>
+  </head>
+  <body>
+
+      Add a URL:
+      <form action="{% url 'urlshortenerapp:index' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="full_url"/>
+        <button type="submit">+</button>
+      </form>
+      Go to short URL page:
+      <form action="{% url 'urlshortenerapp:redirect_typed' %}" method="GET">
+        {% csrf_token %}
+        <input type="text" name="short_url"/>
+        <button type="submit">Redirect</button>
+      </form>
+      <ul>
+        {% for url_item in web_address %}
+        <li>
+          <p>{{ url_item.url_long }}</p>
+          <!-- <p>{{ todo_item.completed }}</p> -->
+          <p>{{ url_item.url_short }}</p>
+          <a href="{% url 'urlshortenerapp:redirect' url_short=url_item.url_short %}" method="GET">
+            <button type="submit">Redirect</button>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </body>
+  </html>
